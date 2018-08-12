@@ -24,6 +24,9 @@
         <activity android:name=".ui.movieDetails.MovieDetailsActivity"
             android:screenOrientation="portrait">
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="39ccbcad7d6b4ba5086567fb3ee443d5f1253ddb" />
     </application>
 
 </manifest>

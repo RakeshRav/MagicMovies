@@ -25,8 +25,12 @@ import android.widget.TextView;
 
 import com.example.rakeshrav.magicmovies.R;
 import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
+import com.example.rakeshrav.magicmovies.data.network.model.movieListData.Result;
 import com.example.rakeshrav.magicmovies.ui.base.BaseActivity;
+import com.example.rakeshrav.magicmovies.utility.AppConstants;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -69,6 +73,7 @@ public class SplashActivity extends BaseActivity implements SplashView {
     @BindView(R.id.rvMovies)
     RecyclerView rvMovies;
     private AdapterMovies adapterMovies;
+    private ActionBar actionbar;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, SplashActivity.class);
@@ -96,22 +101,16 @@ public class SplashActivity extends BaseActivity implements SplashView {
         // Inflate the menu_main; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        MenuItem item = menu.findItem(R.id.action_search);
+        MenuItem item = menu.findItem(R.id.action_search_main);
+
         searchView.setMenuItem(item);
         searchView.setVoiceSearch(false);
 
         return true;
     }
 
-    private ActionBar actionbar;
     @Override
     protected void setUp() {
-
-        setSupportActionBar(toolbar);
-        actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -143,18 +142,44 @@ public class SplashActivity extends BaseActivity implements SplashView {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPresenter.getMoviesList(POPULAR_MOVIES);
+                mPresenter.getMoviesList(POPULAR_MOVIES, null);
             }
-        },2000);
+        }, 2000);
 
+        //init toolbar
+        setSupportActionBar(toolbar);
+        actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        actionbar.setTitle("Popular Movies");
         setUpNavDrawer();
+        setupSearch();
 
         rvMovies.setLayoutManager(new GridLayoutManager(this, 2));
-
+        //initializze recycler view
         adapterMovies = new AdapterMovies(this, null);
         rvMovies.setAdapter(adapterMovies);
+    }
 
-        actionbar.setTitle("Popular Movies");
+    private void setupSearch() {
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "onQueryTextSubmit : " + query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, "onQueryTextChange : " + newText);
+
+                if (!newText.isEmpty()){
+                    mPresenter.searchMovies(newText);
+                }
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -178,17 +203,23 @@ public class SplashActivity extends BaseActivity implements SplashView {
                 // close drawer when item is tapped
                 drawerLayout.closeDrawers();
 
-                switch (item.getItemId()){
-                    case R.id.search:
-                        actionbar.setTitle("Search Movies");
+//                Log.d(TAG,"item id : "+item.get);
+                switch (item.getItemId()) {
+                    case R.id.drama_movie:
+                        actionbar.setTitle("Drama Movies");
+                        mPresenter.getMoviesList(null, AppConstants.GENRE_ID_DRAMA);
+                        return true;
+                    case R.id.horror_movie:
+                        actionbar.setTitle("Horror Movies");
+                        mPresenter.getMoviesList(null, AppConstants.GENRE_ID_HORROR);
                         return true;
                     case R.id.top:
                         actionbar.setTitle("Top Movies");
-                        mPresenter.getMoviesList(TOP_MOVIES);
+                        mPresenter.getMoviesList(TOP_MOVIES, null);
                         return true;
                     case R.id.popular:
                         actionbar.setTitle("Top Movies");
-                        mPresenter.getMoviesList(POPULAR_MOVIES);
+                        mPresenter.getMoviesList(POPULAR_MOVIES, null);
                         return true;
                 }
                 return true;
@@ -213,15 +244,15 @@ public class SplashActivity extends BaseActivity implements SplashView {
     }
 
     @Override
-    public void populateData(MovieListData movieListData) {
+    public void populateData(List<Result> results) {
         Log.d(TAG, "PopulateData in UI");
-        if (movieListData.getResults().size() > 0) {
+        if (results.size() > 0) {
             llPlaceHolder.setVisibility(View.INVISIBLE);
             rvMovies.setVisibility(View.VISIBLE);
-            if (adapterMovies.getItemCount()>0){
+            if (adapterMovies.getItemCount() > 0) {
                 rvMovies.smoothScrollToPosition(0);
             }
-            adapterMovies.updateList(movieListData.getResults());
+            adapterMovies.updateList(results);
         } else {
             rvMovies.setVisibility(View.INVISIBLE);
             llPlaceHolder.setVisibility(View.VISIBLE);
@@ -232,5 +263,16 @@ public class SplashActivity extends BaseActivity implements SplashView {
     public void onViewClickedExplore() {
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        } else {
+            if (searchView.isSearchOpen()) {
+                searchView.closeSearch();
+            } else {
+                super.onBackPressed();
+            }
+        }
+    }
 }

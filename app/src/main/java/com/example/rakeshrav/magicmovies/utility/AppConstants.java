@@ -26,6 +26,10 @@ public final class AppConstants {
 
     public static final String PREF_NAME = "magicMovies";
 
+    public static final String GENRE_ID_DRAMA = "18";
+    public static final String GENRE_ID_HORROR = "27";
+
+
     public static final long NULL_INDEX = -1L;
 
     public static final String TIMESTAMP_FORMAT = "dd MMM yyyy";

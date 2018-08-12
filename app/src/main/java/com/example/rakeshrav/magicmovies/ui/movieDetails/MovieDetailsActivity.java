@@ -121,8 +121,10 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsVi
             tvReleaseStatus.setText(movieDetailsData.getStatus());
         }
 
-        if (!CommonUtils.isNullOrEmpty(movieDetailsData.getSpokenLanguages().get(0).getName())) {
-            tvLanguage.setText(movieDetailsData.getSpokenLanguages().get(0).getName());
+        if (!movieDetailsData.getSpokenLanguages().isEmpty()){
+            if (!CommonUtils.isNullOrEmpty(movieDetailsData.getSpokenLanguages().get(0).getName())) {
+                tvLanguage.setText(movieDetailsData.getSpokenLanguages().get(0).getName());
+            }
         }
 
         if (!CommonUtils.isNullOrEmpty(movieDetailsData.getReleaseDate())) {
@@ -144,7 +146,9 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsVi
         tvRating.setText(String.valueOf(movieDetailsData.getVoteAverage()));
         tvVotes.setText(String.valueOf(movieDetailsData.getVoteCount()).concat(" votes"));
 
-        tvDuration.setText(getFormatedDuration(movieDetailsData.getRuntime()));
+        if(movieDetailsData.getRuntime()  != null) {
+            tvDuration.setText(getFormatedDuration(movieDetailsData.getRuntime()));
+        }
         this.movieDetailsData = movieDetailsData;
     }
 

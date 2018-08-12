@@ -17,6 +17,7 @@ package com.example.rakeshrav.magicmovies.data.network;
 
 import com.example.rakeshrav.magicmovies.data.network.model.movieDetailsData.MovieDetailsData;
 import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
+import com.example.rakeshrav.magicmovies.data.network.model.searchData.SearchData;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -37,7 +38,12 @@ public interface ApiHelper {
     @GET("/discover/movie")
     void getMoviesList(@Query("sort_by") String sortBy,
                        @Query("api_key") String apiKey,
+                       @Query("with_genres") String withGenre,
                        Callback<MovieListData> callback);
 
-//    https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=d641105fce46ab50297f6b84d58779ee
+    @GET("/search/movie")
+    void getSearchMovies(@Query("query") String query,
+                       @Query("api_key") String apiKey,
+                       Callback<SearchData> callback);
+
 }

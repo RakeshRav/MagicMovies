@@ -7,6 +7,7 @@ import com.example.rakeshrav.magicmovies.BuildConfig;
 import com.example.rakeshrav.magicmovies.data.DataManager;
 import com.example.rakeshrav.magicmovies.data.network.RestClient;
 import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
+import com.example.rakeshrav.magicmovies.data.network.model.searchData.SearchData;
 import com.example.rakeshrav.magicmovies.ui.base.BasePresenter;
 import com.google.gson.Gson;
 
@@ -29,14 +30,16 @@ public class SplashPresenter<V extends SplashView> extends BasePresenter<V> impl
     }
 
     @Override
-    public void getMoviesList(final String listType) {
+    public void getMoviesList(final String listType, final String genres) {
         getMvpView().showLoading();
-        RestClient.getApiServicePojo().getMoviesList(listType, BuildConfig.API_KEY, new Callback<MovieListData>() {
+        RestClient.getApiServicePojo().getMoviesList(listType, BuildConfig.API_KEY,
+                genres,
+                new Callback<MovieListData>() {
             @Override
             public void success(MovieListData movieListData, Response response) {
                 Log.d(TAG, "movie list success : " + new Gson().toJson(movieListData));
                 getMvpView().hideLoading();
-                getMvpView().populateData(movieListData);
+                getMvpView().populateData(movieListData.getResults());
             }
 
             @Override
@@ -47,9 +50,26 @@ public class SplashPresenter<V extends SplashView> extends BasePresenter<V> impl
                     @Override
                     public void onClick(View view) {
                         getMvpView().dismissErrDialog();
-                        getMoviesList(listType);
+                        getMoviesList(listType, genres);
                     }
                 });
+            }
+        });
+    }
+
+
+    @Override
+    public void searchMovies(String queryTerm) {
+        RestClient.getApiServicePojo().getSearchMovies(queryTerm, BuildConfig.API_KEY, new Callback<SearchData>() {
+            @Override
+            public void success(SearchData searchData, Response response) {
+                Log.d(TAG, "movie search success : " + new Gson().toJson(searchData));
+                getMvpView().populateData(searchData.getResults());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "movie search fail : " + error.toString());
             }
         });
     }

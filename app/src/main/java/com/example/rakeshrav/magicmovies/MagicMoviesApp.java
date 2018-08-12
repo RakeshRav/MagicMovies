@@ -17,11 +17,13 @@ package com.example.rakeshrav.magicmovies;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.example.rakeshrav.magicmovies.data.DataManager;
 import com.example.rakeshrav.magicmovies.di.component.ApplicationComponent;
 import com.example.rakeshrav.magicmovies.di.component.DaggerApplicationComponent;
 import com.example.rakeshrav.magicmovies.di.module.ApplicationModule;
 
+import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 
 
@@ -39,6 +41,7 @@ public class MagicMoviesApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this)).build();

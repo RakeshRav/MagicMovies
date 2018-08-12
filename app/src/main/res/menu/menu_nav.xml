@@ -3,13 +3,18 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/popular"
-            android:title="Popular" />
-        <item
-            android:id="@+id/top"
-            android:title="Top" />
+            android:title="Popular Movies" />
 
         <item
-            android:id="@+id/search"
-            android:title="Search" />
+            android:id="@+id/top"
+            android:title="Top Movies" />
+
+        <item
+            android:id="@+id/drama_movie"
+            android:title="Drama Movies" />
+
+        <item
+            android:id="@+id/horror_movie"
+            android:title="Horror Movies" />
     </group>
 </menu>

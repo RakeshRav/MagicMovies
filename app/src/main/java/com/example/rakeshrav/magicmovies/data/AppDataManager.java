@@ -21,6 +21,7 @@ import android.content.Context;
 import com.example.rakeshrav.magicmovies.data.network.ApiHelper;
 import com.example.rakeshrav.magicmovies.data.network.model.movieDetailsData.MovieDetailsData;
 import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
+import com.example.rakeshrav.magicmovies.data.network.model.searchData.SearchData;
 import com.example.rakeshrav.magicmovies.data.prefs.PreferencesHelper;
 import com.example.rakeshrav.magicmovies.di.ApplicationContext;
 
@@ -77,7 +78,12 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getMoviesList(String movieId, String apiKey, Callback<MovieListData> callback) {
+    public void getMoviesList(String movieId, String apiKey, String withGenre, Callback<MovieListData> callback) {
+
+    }
+
+    @Override
+    public void getSearchMovies(String query, String apiKey, Callback<SearchData> callback) {
 
     }
 }
