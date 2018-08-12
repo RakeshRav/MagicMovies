@@ -4,19 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.CardView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,8 +29,7 @@ import com.example.rakeshrav.magicmovies.data.network.model.itunesData.ItunesDat
 import com.example.rakeshrav.magicmovies.data.network.model.itunesData.Result;
 import com.example.rakeshrav.magicmovies.ui.base.BaseActivity;
 import com.example.rakeshrav.magicmovies.ui.favouriteList.FavouriteActivity;
-import com.example.rakeshrav.magicmovies.utility.ScreenUtils;
-import com.example.rakeshrav.magicmovies.utility.ViewUtils;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,24 +46,12 @@ public class SplashActivity extends BaseActivity implements SplashView {
 
     @Inject
     SplashMvpPresenter<SplashView> mPresenter;
-    @BindView(R.id.ivLogo)
-    ImageView ivLogo;
-    @BindView(R.id.ivAction)
-    ImageView ivAction;
     @BindView(R.id.cvSearchSplash)
     CardView cvSearchSplash;
     @BindView(R.id.flMainSpalsh)
     FrameLayout flMainSpalsh;
-    @BindView(R.id.tvTitle)
-    TextView tvTitle;
-    @BindView(R.id.ivFav)
-    ImageView ivFav;
-    @BindView(R.id.cvSearchMain)
-    CardView cvSearchMain;
     @BindView(R.id.llMainActivity)
     LinearLayout llMainActivity;
-    @BindView(R.id.etSearch)
-    EditText etSearch;
     @BindView(R.id.tvSongsCount)
     TextView tvSongsCount;
     @BindView(R.id.llSongsCount)
@@ -78,13 +67,21 @@ public class SplashActivity extends BaseActivity implements SplashView {
     TextView tvPlaceholder;
     @BindView(R.id.llPlaceHolder)
     LinearLayout llPlaceHolder;
+    @BindView(R.id.cvTopMoviesSplash)
+    CardView cvTopMoviesSplash;
+    @BindView(R.id.llContent)
+    LinearLayout llContent;
+    @BindView(R.id.tvAppName)
+    TextView tvAppName;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.search_view)
+    MaterialSearchView searchView;
+    @BindView(R.id.nav_view)
+    NavigationView navView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
     private SearchResultsPagerAdapter pagerAdapter;
-    private int sizeToolbar = 60;
-    private int sizeSearch = 60;
-    private int sizeCount = 40;
-    private int sizeIndicators = 50;
-    //layout size all in dp
-    private int layoutSize = 70;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, SplashActivity.class);
@@ -103,67 +100,77 @@ public class SplashActivity extends BaseActivity implements SplashView {
 
         mPresenter.onAttach(this);
 
-        calculateListSize();
         setUp();
 
-//        mPresenter.getSongList("", "");
     }
 
-    private void calculateListSize() {
-        int screenSize = ScreenUtils.getScreenHeight(this);
-        int totalSizeOccupied = sizeToolbar + sizeCount + sizeIndicators + sizeSearch;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu_main; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        int availabelSize = screenSize - ViewUtils.dpToPx(totalSizeOccupied);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+        searchView.setVoiceSearch(false);
 
-        numberItemToFit = availabelSize / ViewUtils.dpToPx(layoutSize);
-
-        Log.d(TAG, "size available for search result : " + availabelSize + ", Items can be fit in that layout : "
-                + numberItemToFit);
+        return true;
     }
 
     @Override
     protected void setUp() {
-        ivAction.setImageResource(R.drawable.shape);
 
-        cvSearchSplash.setVisibility(View.INVISIBLE);
-        ivLogo.animate().translationYBy(ViewUtils.dpToPx(100)).setDuration(0).start();
+        setSupportActionBar(toolbar);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                ivLogo.animate().translationYBy(-ViewUtils.dpToPx(100)).setDuration(500).start();
+                Animation fadeOut = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.fade_out);
+                fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
 
-                cvSearchSplash.setVisibility(View.VISIBLE);
-                Animation animation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.fade_in_normal);
-                cvSearchSplash.startAnimation(animation);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        flMainSpalsh.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                flMainSpalsh.startAnimation(fadeOut);
+
+                llMainActivity.setVisibility(View.VISIBLE);
+                Animation fadein = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.fade_in_normal);
+                llMainActivity.startAnimation(fadein);
             }
-        }, 2000);
+        }, 3000);
 
+        setUpNavDrawer();
+    }
 
-        etSearch.addTextChangedListener(new TextWatcher() {
+    private void setUpNavDrawer() {
+
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            }
+                item.setChecked(true);
+                // close drawer when item is tapped
+                drawerLayout.closeDrawers();
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                Log.d(TAG, "search text : " + editable.toString());
-
-                searchForSongs(editable.toString());
+                return true;
             }
         });
     }
 
     private void searchForSongs(final String s) {
-        if (isNetworkConnected()){
+        if (isNetworkConnected()) {
             mPresenter.getSongList(s, "");
-        }else {
+        } else {
             showErrorDialog("No Internet Connection Available!", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -174,40 +181,6 @@ public class SplashActivity extends BaseActivity implements SplashView {
         }
     }
 
-    @OnClick(R.id.cvSearchSplash)
-    public void onViewClicked() {
-
-        cvSearchSplash.animate().translationYBy(-(
-                (ScreenUtils.getScreenHeight(this) / 2)
-                        -
-                        ViewUtils.dpToPx(50))
-        ).setDuration(500).start();
-
-        Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-        fadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                flMainSpalsh.setVisibility(View.GONE);
-                etSearch.requestFocus();
-                showKeyboard(etSearch);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        flMainSpalsh.startAnimation(fadeOut);
-
-        llMainActivity.setVisibility(View.VISIBLE);
-        Animation fadein = AnimationUtils.loadAnimation(this, R.anim.fade_in_normal);
-        llMainActivity.startAnimation(fadein);
-    }
 
     @Override
     public void populateData(ItunesData itunesData) {
@@ -221,9 +194,6 @@ public class SplashActivity extends BaseActivity implements SplashView {
             if (itunesData.getResultCount() % numberItemToFit != 0) {
                 pages++;
             }
-
-            Log.d(TAG, "pages : " + pages);
-            makeBottomBar(pages);
 
             viewPagerItems.setVisibility(View.VISIBLE);
             llIndicators.setVisibility(View.VISIBLE);
@@ -260,27 +230,6 @@ public class SplashActivity extends BaseActivity implements SplashView {
         }
     }
 
-    private void makeBottomBar(int pages) {
-        llIndicators.removeAllViews();
-
-        for (int i = 0; i < pages; i++) {
-            ImageView imageView = new ImageView(this);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewUtils.dpToPx(30), ViewUtils.dpToPx(30));
-            imageView.setLayoutParams(params);
-
-            if (i == 0) {
-                imageView.setImageResource(R.drawable.rectangle_4);
-            } else {
-                imageView.setImageResource(R.drawable.rectangle_4_copy);
-            }
-
-            imageView.setPadding(ViewUtils.dpToPx(4), 0, ViewUtils.dpToPx(4), 0);
-
-            llIndicators.addView(imageView);
-        }
-    }
-
     private void updateIndicators(int pos) {
 
         prevIndicator = currentIndicator;
@@ -293,10 +242,8 @@ public class SplashActivity extends BaseActivity implements SplashView {
         imageViewCurr.setImageResource(R.drawable.rectangle_4);
     }
 
-    @OnClick(R.id.ivFav)
-    public void onViewClickedFAV() {
-        Intent intent = FavouriteActivity.getStartIntent(this);
-        startActivity(intent);
+    @OnClick(R.id.cvTopMoviesSplash)
+    public void onViewClickedExplore() {
     }
 
     private class SearchResultsPagerAdapter extends FragmentStatePagerAdapter {

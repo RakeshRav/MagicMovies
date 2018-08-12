@@ -54,4 +54,6 @@ ext {
 
     aviLibrary = '2.1.3'
     picassoVersion = '2.5.2'
+
+    searchView = '1.4.0'
 }
