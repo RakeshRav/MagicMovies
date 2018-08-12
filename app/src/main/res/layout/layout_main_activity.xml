@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/app_background"
-    android:visibility="gone">
+    >
 
+    <!--toolbar with search-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -39,7 +40,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
             android:id="@+id/llSongsCount"
@@ -47,15 +49,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="All Songs "
+                android:text="Popular Movies"
                 android:textColor="@color/dark_gray"
-                android:textSize="13sp"
-                android:fontFamily="@font/roboto_regular"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_medium"
                 android:letterSpacing=".05"
                 />
 
@@ -67,6 +71,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/roboto_regular"
                 android:letterSpacing=".05"
+                android:visibility="gone"
                 />
 
             <TextView
@@ -78,6 +83,7 @@
                 android:textSize="13sp"
                 android:fontFamily="@font/roboto_regular"
                 android:letterSpacing=".05"
+                android:visibility="gone"
                 />
 
         </LinearLayout>
@@ -86,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/llSongsCount"
-            android:layout_above="@+id/llIndicators">
+            >
 
             <LinearLayout
                 android:id="@+id/llPlaceHolder"
@@ -101,15 +107,15 @@
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/song_playlist"
+                    android:src="@drawable/movies"
+                    android:background="@drawable/circle_shape"
                     />
-
 
                 <TextView
                     android:id="@+id/tvPlaceholder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Search Music on the go "
+                    android:text="Search Movies on the go "
                     android:textColor="@color/dark_gray"
                     android:textSize="20sp"
                     android:fontFamily="@font/roboto_thin"
@@ -120,27 +126,17 @@
 
             </LinearLayout>
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewPagerItems"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvMovies"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="8dp"
-                android:visibility="gone">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp">
 
+            </android.support.v7.widget.RecyclerView>
 
-            </android.support.v4.view.ViewPager>
         </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/llIndicators"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true">
-
-        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

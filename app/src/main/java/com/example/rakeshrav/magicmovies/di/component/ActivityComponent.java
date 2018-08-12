@@ -17,8 +17,6 @@ package com.example.rakeshrav.magicmovies.di.component;
 
 import com.example.rakeshrav.magicmovies.di.PerActivity;
 import com.example.rakeshrav.magicmovies.di.module.ActivityModule;
-import com.example.rakeshrav.magicmovies.ui.favouriteList.FavouriteActivity;
-import com.example.rakeshrav.magicmovies.ui.player.PlayerActivity;
 import com.example.rakeshrav.magicmovies.ui.splash.SplashActivity;
 
 import dagger.Component;
@@ -33,9 +31,5 @@ public interface ActivityComponent {
 
 
     void inject(SplashActivity activity);
-
-    void inject(PlayerActivity activity);
-
-    void inject(FavouriteActivity activity);
 
 }

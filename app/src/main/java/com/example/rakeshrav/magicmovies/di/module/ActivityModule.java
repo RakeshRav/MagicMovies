@@ -23,12 +23,6 @@ import com.example.rakeshrav.magicmovies.data.network.ApiHelper;
 import com.example.rakeshrav.magicmovies.data.network.AppApiHelper;
 import com.example.rakeshrav.magicmovies.di.ActivityContext;
 import com.example.rakeshrav.magicmovies.di.PerActivity;
-import com.example.rakeshrav.magicmovies.ui.favouriteList.FavouriteMvpPresenter;
-import com.example.rakeshrav.magicmovies.ui.favouriteList.FavouritePresenter;
-import com.example.rakeshrav.magicmovies.ui.favouriteList.FavouriteView;
-import com.example.rakeshrav.magicmovies.ui.player.PlayerMvpPresenter;
-import com.example.rakeshrav.magicmovies.ui.player.PlayerPresenter;
-import com.example.rakeshrav.magicmovies.ui.player.PlayerView;
 import com.example.rakeshrav.magicmovies.ui.splash.SplashMvpPresenter;
 import com.example.rakeshrav.magicmovies.ui.splash.SplashPresenter;
 import com.example.rakeshrav.magicmovies.ui.splash.SplashView;
@@ -76,20 +70,8 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    SplashMvpPresenter<SplashView> providesSplashPresenter(SplashPresenter<SplashView> splashPresenter){
+    SplashMvpPresenter<SplashView> providesSplashPresenter(SplashPresenter<SplashView> splashPresenter) {
         return splashPresenter;
-    }
-
-    @Provides
-    @PerActivity
-    PlayerMvpPresenter<PlayerView> providesPlayerPresenter(PlayerPresenter<PlayerView> playerPresenter){
-        return playerPresenter;
-    }
-
-    @Provides
-    @PerActivity
-    FavouriteMvpPresenter<FavouriteView> providesFavouritePresenter(FavouritePresenter<FavouriteView> playerPresenter){
-        return playerPresenter;
     }
 
     @Provides
