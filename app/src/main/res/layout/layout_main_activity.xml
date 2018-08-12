@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llMainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/app_background"
+    android:visibility="gone"
+    >
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
+        >
+
+        <ImageView
+            android:id="@+id/ivAction"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/shape"
+            android:padding="4dp"
+            android:layout_centerVertical="true"
+            />
+
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MPlayer"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:fontFamily="@font/roboto_medium"
+            android:layout_toRightOf="@+id/ivAction"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:letterSpacing=".01"
+            />
+
+        <ImageView
+            android:id="@+id/ivFav"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/favorite"
+            android:padding="8dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        >
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvSearchMain"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/white"
+            android:background="@color/white"
+            app:cardCornerRadius="6dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            >
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/search"
+                android:padding="6dp"
+                android:layout_gravity="center_vertical"
+                />
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_gravity="center_vertical"
+                android:hint="Search Music Titles, Artists, Movies etc."
+                android:textSize="13sp"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:singleLine="true"
+                android:fontFamily="@font/roboto_regular"/>
+
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llSongsCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All Songs "
+                android:textColor="@color/dark_gray"
+                android:textSize="13sp"
+                android:fontFamily="@font/roboto_regular"
+                android:letterSpacing=".05"
+                />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                android:background="@color/dark_gray"
+                android:layout_marginLeft="4dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_regular"
+                android:letterSpacing=".05"
+                />
+
+            <TextView
+                android:id="@+id/tvSongsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  "
+                android:textColor="@color/dark_gray"
+                android:textSize="13sp"
+                android:fontFamily="@font/roboto_regular"
+                android:letterSpacing=".05"
+                />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/llSongsCount"
+            android:layout_above="@+id/llIndicators">
+
+            <LinearLayout
+                android:id="@+id/llPlaceHolder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_margin="16dp">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/song_playlist"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvPlaceholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search Music on the go "
+                    android:textColor="@color/dark_gray"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_thin"
+                    android:layout_marginTop="16dp"
+                    android:letterSpacing=".05"
+                    />
+
+
+            </LinearLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPagerItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="8dp"
+                android:visibility="gone">
+
+
+            </android.support.v4.view.ViewPager>
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/llIndicators"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
