@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.rakeshrav.magicmovies.R;
 import com.example.rakeshrav.magicmovies.data.network.model.itunesData.ItunesData;
+import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
 import com.example.rakeshrav.magicmovies.ui.base.BaseActivity;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -34,6 +35,7 @@ import butterknife.OnClick;
 public class SplashActivity extends BaseActivity implements SplashView {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
+    private static final String POPULAR_MOVIES = "popularity.desc";
 
     @Inject
     SplashMvpPresenter<SplashView> mPresenter;
@@ -138,6 +140,8 @@ public class SplashActivity extends BaseActivity implements SplashView {
 
         rvMovies.setLayoutManager(new GridLayoutManager(this, 2));
         rvMovies.setAdapter(new AdapterMovies(this, null));
+
+        mPresenter.getMoviesList(POPULAR_MOVIES);
     }
 
     private void setUpNavDrawer() {
@@ -155,15 +159,15 @@ public class SplashActivity extends BaseActivity implements SplashView {
         });
     }
 
-    private void searchForSongs(final String s) {
+    private void searchForMovies(final String term) {
         if (isNetworkConnected()) {
-            mPresenter.getSongList(s, "");
+
         } else {
             showErrorDialog("No Internet Connection Available!", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     dismissErrDialog();
-                    searchForSongs(s);
+                    searchForMovies(term);
                 }
             });
         }
@@ -171,9 +175,9 @@ public class SplashActivity extends BaseActivity implements SplashView {
 
 
     @Override
-    public void populateData(ItunesData itunesData) {
+    public void populateData(MovieListData movieListData) {
 
-        if (itunesData.getResultCount() > 0) {
+        if (movieListData.getResults().size() > 0) {
 
 
         } else {

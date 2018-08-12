@@ -16,6 +16,8 @@
 package com.example.rakeshrav.magicmovies.data.network;
 
 import com.example.rakeshrav.magicmovies.data.network.model.itunesData.ItunesData;
+import com.example.rakeshrav.magicmovies.data.network.model.movieDetailsData.MovieDetailsData;
+import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,7 +37,12 @@ public class AppApiHelper implements ApiHelper {
 
 
     @Override
-    public void getSongsList(String searchTerm, String limit,String media, Callback<ItunesData> callback) {
+    public void getMovieDetails(String movieId, String apiKey, Callback<MovieDetailsData> callback) {
+
+    }
+
+    @Override
+    public void getMoviesList(String movieId, String apiKey, Callback<MovieListData> callback) {
 
     }
 }

@@ -20,6 +20,8 @@ import android.content.Context;
 
 import com.example.rakeshrav.magicmovies.data.network.ApiHelper;
 import com.example.rakeshrav.magicmovies.data.network.model.itunesData.ItunesData;
+import com.example.rakeshrav.magicmovies.data.network.model.movieDetailsData.MovieDetailsData;
+import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
 import com.example.rakeshrav.magicmovies.data.prefs.PreferencesHelper;
 import com.example.rakeshrav.magicmovies.di.ApplicationContext;
 
@@ -70,18 +72,13 @@ public class AppDataManager implements DataManager {
         mPreferencesHelper.setFavsResult(results);
     }
 
-//    @Override
-//    public ForecastData getForecastReport() {
-//        return mPreferencesHelper.getForecastReport();
-//    }
-//
-//    @Override
-//    public void setForecastReport(ForecastData forecastReport) {
-//        mPreferencesHelper.setForecastReport(forecastReport);
-//    }
+    @Override
+    public void getMovieDetails(String movieId, String apiKey, Callback<MovieDetailsData> callback) {
+
+    }
 
     @Override
-    public void getSongsList(String searchTerm, String limit, String music,Callback<ItunesData> callback) {
+    public void getMoviesList(String movieId, String apiKey, Callback<MovieListData> callback) {
 
     }
 }

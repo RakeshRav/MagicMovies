@@ -6,5 +6,6 @@ import com.example.rakeshrav.magicmovies.ui.base.MvpPresenter;
 @PerActivity
 public interface SplashMvpPresenter<V extends SplashView> extends MvpPresenter<V> {
 
-    void getSongList(String term, String limit);
+    void getMoviesList(String listType);
+
 }

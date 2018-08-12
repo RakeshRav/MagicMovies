@@ -17,6 +17,7 @@ package com.example.rakeshrav.magicmovies.di.component;
 
 import com.example.rakeshrav.magicmovies.di.PerActivity;
 import com.example.rakeshrav.magicmovies.di.module.ActivityModule;
+import com.example.rakeshrav.magicmovies.ui.movieDetails.MovieDetailsActivity;
 import com.example.rakeshrav.magicmovies.ui.splash.SplashActivity;
 
 import dagger.Component;
@@ -31,5 +32,6 @@ public interface ActivityComponent {
 
 
     void inject(SplashActivity activity);
+    void inject(MovieDetailsActivity activity);
 
 }

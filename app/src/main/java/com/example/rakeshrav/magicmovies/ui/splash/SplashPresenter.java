@@ -2,9 +2,12 @@ package com.example.rakeshrav.magicmovies.ui.splash;
 
 import android.util.Log;
 
+import com.example.rakeshrav.magicmovies.BuildConfig;
 import com.example.rakeshrav.magicmovies.data.DataManager;
 import com.example.rakeshrav.magicmovies.data.network.RestClient;
 import com.example.rakeshrav.magicmovies.data.network.model.itunesData.ItunesData;
+import com.example.rakeshrav.magicmovies.data.network.model.movieDetailsData.MovieDetailsData;
+import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
 import com.example.rakeshrav.magicmovies.ui.base.BasePresenter;
 import com.google.gson.Gson;
 
@@ -27,20 +30,17 @@ public class SplashPresenter<V extends SplashView> extends BasePresenter<V> impl
     }
 
     @Override
-    public void getSongList(String term, String limit) {
-        RestClient.getApiServicePojo().getSongsList(term, String.valueOf(limit),
-                "music",
-                new Callback<ItunesData>() {
-                    @Override
-                    public void success(ItunesData itunesData, Response response) {
-                        Log.d(TAG,"Success songs list : "+new Gson().toJson(itunesData));
-                        getMvpView().populateData(itunesData);
-                    }
+    public void getMoviesList(String listType) {
+        RestClient.getApiServicePojo().getMoviesList(listType, BuildConfig.API_KEY, new Callback<MovieListData>() {
+            @Override
+            public void success(MovieListData movieListData, Response response) {
+                Log.d(TAG,"movie list success : "+new Gson().toJson(movieListData));
+            }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.d(TAG,"failure songs list : "+error.toString());
-                    }
-                });
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG,"movie list failure : "+error.toString());
+            }
+        });
     }
 }

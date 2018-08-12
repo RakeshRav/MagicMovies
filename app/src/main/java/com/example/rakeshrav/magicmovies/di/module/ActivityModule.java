@@ -23,6 +23,9 @@ import com.example.rakeshrav.magicmovies.data.network.ApiHelper;
 import com.example.rakeshrav.magicmovies.data.network.AppApiHelper;
 import com.example.rakeshrav.magicmovies.di.ActivityContext;
 import com.example.rakeshrav.magicmovies.di.PerActivity;
+import com.example.rakeshrav.magicmovies.ui.movieDetails.MovieDetailsMvpPresenter;
+import com.example.rakeshrav.magicmovies.ui.movieDetails.MovieDetailsPresenter;
+import com.example.rakeshrav.magicmovies.ui.movieDetails.MovieDetailsView;
 import com.example.rakeshrav.magicmovies.ui.splash.SplashMvpPresenter;
 import com.example.rakeshrav.magicmovies.ui.splash.SplashPresenter;
 import com.example.rakeshrav.magicmovies.ui.splash.SplashView;
@@ -72,6 +75,12 @@ public class ActivityModule {
     @PerActivity
     SplashMvpPresenter<SplashView> providesSplashPresenter(SplashPresenter<SplashView> splashPresenter) {
         return splashPresenter;
+    }
+
+    @Provides
+    @PerActivity
+    MovieDetailsMvpPresenter<MovieDetailsView> providesMovieDetailsPresenter(MovieDetailsPresenter<MovieDetailsView> movieDetailsPresenter) {
+        return movieDetailsPresenter;
     }
 
     @Provides

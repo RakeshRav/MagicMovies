@@ -15,10 +15,12 @@
 
 package com.example.rakeshrav.magicmovies.data.network;
 
-import com.example.rakeshrav.magicmovies.data.network.model.itunesData.ItunesData;
+import com.example.rakeshrav.magicmovies.data.network.model.movieDetailsData.MovieDetailsData;
+import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
 
 import retrofit.Callback;
 import retrofit.http.GET;
+import retrofit.http.Path;
 import retrofit.http.Query;
 
 /**
@@ -27,9 +29,15 @@ import retrofit.http.Query;
 
 public interface ApiHelper {
 
-    @GET("/search")
-    void getSongsList(@Query("term") String searchTerm,
-                      @Query("limit") String limit,
-                      @Query("media") String music,
-                      Callback<ItunesData> callback);
+    @GET("/movie/{movieId}")
+    void getMovieDetails(@Path("movieId") String movieId,
+                         @Query("api_key") String apiKey,
+                         Callback<MovieDetailsData> callback);
+
+    @GET("/discover/movie")
+    void getMoviesList(@Query("sort_by") String sortBy,
+                       @Query("api_key") String apiKey,
+                       Callback<MovieListData> callback);
+
+//    https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=d641105fce46ab50297f6b84d58779ee
 }
