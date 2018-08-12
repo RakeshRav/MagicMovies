@@ -15,7 +15,6 @@
 
 package com.example.rakeshrav.magicmovies.data.network;
 
-import com.example.rakeshrav.magicmovies.data.network.model.itunesData.ItunesData;
 import com.example.rakeshrav.magicmovies.data.network.model.movieDetailsData.MovieDetailsData;
 import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
 

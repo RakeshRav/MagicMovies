@@ -11,6 +11,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.rakeshrav.magicmovies.R;
-import com.example.rakeshrav.magicmovies.data.network.model.itunesData.ItunesData;
 import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
 import com.example.rakeshrav.magicmovies.ui.base.BaseActivity;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -63,12 +63,9 @@ public class SplashActivity extends BaseActivity implements SplashView {
     NavigationView navView;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @BindView(R.id.tvSongsCount)
-    TextView tvSongsCount;
-    @BindView(R.id.llSongsCount)
-    LinearLayout llSongsCount;
     @BindView(R.id.rvMovies)
     RecyclerView rvMovies;
+    private AdapterMovies adapterMovies;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, SplashActivity.class);
@@ -139,7 +136,9 @@ public class SplashActivity extends BaseActivity implements SplashView {
         setUpNavDrawer();
 
         rvMovies.setLayoutManager(new GridLayoutManager(this, 2));
-        rvMovies.setAdapter(new AdapterMovies(this, null));
+
+        adapterMovies = new AdapterMovies(this, null);
+        rvMovies.setAdapter(adapterMovies);
 
         mPresenter.getMoviesList(POPULAR_MOVIES);
     }
@@ -173,15 +172,16 @@ public class SplashActivity extends BaseActivity implements SplashView {
         }
     }
 
-
     @Override
     public void populateData(MovieListData movieListData) {
-
+        Log.d(TAG, "PopulateData in UI");
         if (movieListData.getResults().size() > 0) {
-
-
+            llPlaceHolder.setVisibility(View.INVISIBLE);
+            rvMovies.setVisibility(View.VISIBLE);
+            adapterMovies.updateList(movieListData.getResults());
         } else {
-
+            rvMovies.setVisibility(View.INVISIBLE);
+            llPlaceHolder.setVisibility(View.VISIBLE);
         }
     }
 

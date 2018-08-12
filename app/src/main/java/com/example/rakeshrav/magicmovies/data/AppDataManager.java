@@ -19,7 +19,6 @@ package com.example.rakeshrav.magicmovies.data;
 import android.content.Context;
 
 import com.example.rakeshrav.magicmovies.data.network.ApiHelper;
-import com.example.rakeshrav.magicmovies.data.network.model.itunesData.ItunesData;
 import com.example.rakeshrav.magicmovies.data.network.model.movieDetailsData.MovieDetailsData;
 import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
 import com.example.rakeshrav.magicmovies.data.prefs.PreferencesHelper;
@@ -62,15 +61,15 @@ public class AppDataManager implements DataManager {
         mPreferencesHelper.setCurrentUserName(userName);
     }
 
-    @Override
-    public ItunesData getFavsResult() {
-        return mPreferencesHelper.getFavsResult();
-    }
-
-    @Override
-    public void setFavsResult(ItunesData results) {
-        mPreferencesHelper.setFavsResult(results);
-    }
+//    @Override
+//    public ItunesData getFavsResult() {
+//        return mPreferencesHelper.getFavsResult();
+//    }
+//
+//    @Override
+//    public void setFavsResult(ItunesData results) {
+//        mPreferencesHelper.setFavsResult(results);
+//    }
 
     @Override
     public void getMovieDetails(String movieId, String apiKey, Callback<MovieDetailsData> callback) {

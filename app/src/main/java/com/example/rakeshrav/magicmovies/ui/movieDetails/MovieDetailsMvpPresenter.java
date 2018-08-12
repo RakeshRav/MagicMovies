@@ -6,5 +6,5 @@ import com.example.rakeshrav.magicmovies.ui.base.MvpPresenter;
 @PerActivity
 public interface MovieDetailsMvpPresenter<V extends MovieDetailsView> extends MvpPresenter<V> {
 
-    void getMovieDetails(int movieId);
+    void getMovieDetails(String movieId);
 }

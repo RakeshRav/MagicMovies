@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,6 +28,7 @@ import butterknife.OnClick;
 public class MovieDetailsActivity extends BaseActivity implements MovieDetailsView {
 
     private static final String TAG = MovieDetailsActivity.class.getSimpleName();
+    public static final String MOVIE_ID = "movieId";
 
     @Inject
     MovieDetailsMvpPresenter<MovieDetailsView> mPresenter;
@@ -82,7 +84,24 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsVi
 
     @Override
     protected void setUp() {
-        mPresenter.getMovieDetails(550);
+        Intent intent = getIntent();
+        String movieId = intent.getStringExtra(MOVIE_ID);
+        Log.d(TAG,"Movie Id : "+movieId);
+        getMoviesDetails(movieId);
+    }
+
+    private void getMoviesDetails(final String movieId){
+        if (isNetworkConnected()){
+            mPresenter.getMovieDetails(movieId);
+        }else {
+            showErrorDialog("No Internet Connection!", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismissErrDialog();
+                    getMoviesDetails(movieId);
+                }
+            });
+        }
     }
 
     MovieDetailsData movieDetailsData;
@@ -110,9 +129,17 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsVi
             tvReleaseDate.setText(CommonUtils.getFormatDate(movieDetailsData.getReleaseDate()));
         }
 
-        if (!CommonUtils.isNullOrEmpty(movieDetailsData.getGenres().get(0).getName())) {
-            tvDrama.setText(movieDetailsData.getGenres().get(0).getName());
+        String genres = "";
+        for (int i = 0; i< movieDetailsData.getGenres().size(); i++){
+            if (!CommonUtils.isNullOrEmpty(movieDetailsData.getGenres().get(i).getName())) {
+                if (i!=movieDetailsData.getGenres().size()-1){
+                    genres = genres.concat(movieDetailsData.getGenres().get(i).getName()+", ");
+                }else {
+                    genres = genres.concat(movieDetailsData.getGenres().get(i).getName());
+                }
+            }
         }
+        tvDrama.setText(genres);
 
         tvRating.setText(String.valueOf(movieDetailsData.getVoteAverage()));
         tvVotes.setText(String.valueOf(movieDetailsData.getVoteCount()).concat(" votes"));

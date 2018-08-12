@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/app_background"
-    android:visibility="gone"
     >
 
     <!--toolbar with search-->
@@ -44,55 +43,9 @@
         android:layout_height="match_parent"
         >
 
-        <LinearLayout
-            android:id="@+id/llSongsCount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="16dp"
-            android:gravity="center_vertical"
-            android:visibility="gone"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Popular Movies"
-                android:textColor="@color/dark_gray"
-                android:textSize="16sp"
-                android:fontFamily="@font/roboto_medium"
-                android:letterSpacing=".05"
-                />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="2dp"
-                android:background="@color/dark_gray"
-                android:layout_marginLeft="4dp"
-                android:layout_gravity="center"
-                android:fontFamily="@font/roboto_regular"
-                android:letterSpacing=".05"
-                android:visibility="gone"
-                />
-
-            <TextView
-                android:id="@+id/tvSongsCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="  "
-                android:textColor="@color/dark_gray"
-                android:textSize="13sp"
-                android:fontFamily="@font/roboto_regular"
-                android:letterSpacing=".05"
-                android:visibility="gone"
-                />
-
-        </LinearLayout>
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/llSongsCount"
             >
 
             <LinearLayout
@@ -132,7 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp">
+                android:layout_marginRight="4dp"
+                >
 
             </android.support.v7.widget.RecyclerView>
 
