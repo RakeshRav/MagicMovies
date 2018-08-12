@@ -70,7 +70,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp">
 
                     <TextView
                         android:id="@+id/tvRating"

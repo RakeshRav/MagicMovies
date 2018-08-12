@@ -16,6 +16,7 @@ import com.example.rakeshrav.magicmovies.BuildConfig;
 import com.example.rakeshrav.magicmovies.R;
 import com.example.rakeshrav.magicmovies.data.network.model.movieListData.Result;
 import com.example.rakeshrav.magicmovies.ui.movieDetails.MovieDetailsActivity;
+import com.example.rakeshrav.magicmovies.utility.CommonUtils;
 import com.example.rakeshrav.magicmovies.utility.ScreenUtils;
 import com.example.rakeshrav.magicmovies.utility.ViewUtils;
 import com.squareup.picasso.Picasso;
@@ -39,6 +40,8 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.MoviesView
     }
 
     public void updateList(List<Result> results){
+        this.results.clear();
+
         this.results.addAll(results);
         notifyDataSetChanged();
     }
@@ -60,10 +63,13 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.MoviesView
     @Override
     public void onBindViewHolder(final MoviesViewHolder holder, int position) {
 
-        String path = BuildConfig.IMAGE_BASE_URL.concat(results.get(position).getPosterPath());
-
-        Picasso.with(context).load(path).fit().into(holder.ivMoviePoster);
-
+        if (!CommonUtils.isNullOrEmpty(results.get(position).getPosterPath())){
+            String path = BuildConfig.IMAGE_BASE_URL.concat(results.get(position).getPosterPath());
+            Picasso.with(context).load(path).fit().into(holder.ivMoviePoster);
+        }else {
+            Picasso.with(context).load(URL).fit().into(holder.ivMoviePoster);
+        }
+        
         holder.cvForegroundView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

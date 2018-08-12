@@ -1,6 +1,7 @@
 package com.example.rakeshrav.magicmovies.ui.splash;
 
 import android.util.Log;
+import android.view.View;
 
 import com.example.rakeshrav.magicmovies.BuildConfig;
 import com.example.rakeshrav.magicmovies.data.DataManager;
@@ -28,19 +29,27 @@ public class SplashPresenter<V extends SplashView> extends BasePresenter<V> impl
     }
 
     @Override
-    public void getMoviesList(String listType) {
+    public void getMoviesList(final String listType) {
+        getMvpView().showLoading();
         RestClient.getApiServicePojo().getMoviesList(listType, BuildConfig.API_KEY, new Callback<MovieListData>() {
             @Override
             public void success(MovieListData movieListData, Response response) {
                 Log.d(TAG, "movie list success : " + new Gson().toJson(movieListData));
-                if (movieListData.getResults().size()>0){
-                    getMvpView().populateData(movieListData);
-                }
+                getMvpView().hideLoading();
+                getMvpView().populateData(movieListData);
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.d(TAG, "movie list failure : " + error.toString());
+                getMvpView().hideLoading();
+                getMvpView().showErrorDialog("Something went wrong at our end!", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getMvpView().dismissErrDialog();
+                        getMoviesList(listType);
+                    }
+                });
             }
         });
     }

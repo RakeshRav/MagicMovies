@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +38,7 @@ public class SplashActivity extends BaseActivity implements SplashView {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
     private static final String POPULAR_MOVIES = "popularity.desc";
+    private static final String TOP_MOVIES = "vote_average.desc";
 
     @Inject
     SplashMvpPresenter<SplashView> mPresenter;
@@ -100,10 +103,14 @@ public class SplashActivity extends BaseActivity implements SplashView {
         return true;
     }
 
+    private ActionBar actionbar;
     @Override
     protected void setUp() {
 
         setSupportActionBar(toolbar);
+        actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -133,6 +140,13 @@ public class SplashActivity extends BaseActivity implements SplashView {
             }
         }, 3000);
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPresenter.getMoviesList(POPULAR_MOVIES);
+            }
+        },2000);
+
         setUpNavDrawer();
 
         rvMovies.setLayoutManager(new GridLayoutManager(this, 2));
@@ -140,7 +154,18 @@ public class SplashActivity extends BaseActivity implements SplashView {
         adapterMovies = new AdapterMovies(this, null);
         rvMovies.setAdapter(adapterMovies);
 
-        mPresenter.getMoviesList(POPULAR_MOVIES);
+        actionbar.setTitle("Popular Movies");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void setUpNavDrawer() {
@@ -153,9 +178,24 @@ public class SplashActivity extends BaseActivity implements SplashView {
                 // close drawer when item is tapped
                 drawerLayout.closeDrawers();
 
+                switch (item.getItemId()){
+                    case R.id.search:
+                        actionbar.setTitle("Search Movies");
+                        return true;
+                    case R.id.top:
+                        actionbar.setTitle("Top Movies");
+                        mPresenter.getMoviesList(TOP_MOVIES);
+                        return true;
+                    case R.id.popular:
+                        actionbar.setTitle("Top Movies");
+                        mPresenter.getMoviesList(POPULAR_MOVIES);
+                        return true;
+                }
                 return true;
             }
         });
+
+        navView.getMenu().getItem(0).setChecked(true);
     }
 
     private void searchForMovies(final String term) {
@@ -178,6 +218,9 @@ public class SplashActivity extends BaseActivity implements SplashView {
         if (movieListData.getResults().size() > 0) {
             llPlaceHolder.setVisibility(View.INVISIBLE);
             rvMovies.setVisibility(View.VISIBLE);
+            if (adapterMovies.getItemCount()>0){
+                rvMovies.smoothScrollToPosition(0);
+            }
             adapterMovies.updateList(movieListData.getResults());
         } else {
             rvMovies.setVisibility(View.INVISIBLE);
@@ -188,4 +231,6 @@ public class SplashActivity extends BaseActivity implements SplashView {
     @OnClick(R.id.cvTopMoviesSplash)
     public void onViewClickedExplore() {
     }
+
+
 }
