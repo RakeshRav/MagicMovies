@@ -18,6 +18,7 @@ package com.example.rakeshrav.magicmovies.data.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
 import com.example.rakeshrav.magicmovies.di.ApplicationContext;
 import com.example.rakeshrav.magicmovies.di.PreferenceInfo;
 import com.google.gson.Gson;
@@ -31,7 +32,8 @@ import javax.inject.Singleton;
  */
 
 @Singleton
-public class AppPreferencesHelper implements PreferencesHelper {
+public class
+AppPreferencesHelper implements PreferencesHelper {
 
     private static final String PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME";
     private static final String PREF_KEY_FAVS = "PREF_KEY_FAVS";
@@ -56,28 +58,29 @@ public class AppPreferencesHelper implements PreferencesHelper {
         mPrefs.edit().putString(PREF_KEY_CURRENT_USER_NAME, userName).apply();
     }
 
-//    @Override
-//    public ItunesData getFavsResult() {
-//        String gson = mPrefs.getString(PREF_KEY_FAVS, null);
-//        if (gson == null) {
-//            return null;
-//        } else {
-//            try {
-//                return GSON.fromJson(gson, ItunesData.class);
-//            } catch (Exception e) {
-//                throw new IllegalArgumentException("Object storaged with key "
-//                        + PREF_KEY_FAVS + " is instanceof other class");
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void setFavsResult(ItunesData object) {
-//        if (object == null) {
-//            throw new IllegalArgumentException("object is null");
-//        }
-//
-//        mPrefs.edit().putString(PREF_KEY_FAVS, GSON.toJson(object)).apply();
-//    }
+    @Override
+    public MovieListData getLastResultData() {
+        String gson = mPrefs.getString(PREF_KEY_FAVS, null);
+        if (gson == null) {
+            return null;
+        } else {
+            try {
+                return GSON.fromJson(gson, MovieListData.class);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Object storaged with key "
+                        + PREF_KEY_FAVS + " is instanceof other class");
+            }
+        }
+    }
+
+    @Override
+    public void setLastResult(MovieListData results) {
+        if (results == null) {
+            throw new IllegalArgumentException("object is null");
+        }
+
+        mPrefs.edit().putString(PREF_KEY_FAVS, GSON.toJson(results)).apply();
+
+    }
 
 }

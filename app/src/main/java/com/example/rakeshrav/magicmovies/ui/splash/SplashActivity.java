@@ -74,6 +74,7 @@ public class SplashActivity extends BaseActivity implements SplashView {
     RecyclerView rvMovies;
     private AdapterMovies adapterMovies;
     private ActionBar actionbar;
+    private MovieListData movieListData;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, SplashActivity.class);
@@ -93,7 +94,6 @@ public class SplashActivity extends BaseActivity implements SplashView {
         mPresenter.onAttach(this);
 
         setUp();
-
     }
 
     @Override
@@ -173,11 +173,28 @@ public class SplashActivity extends BaseActivity implements SplashView {
             public boolean onQueryTextChange(String newText) {
                 Log.d(TAG, "onQueryTextChange : " + newText);
 
-                if (!newText.isEmpty()){
-                    mPresenter.searchMovies(newText);
+                if (!newText.isEmpty()) {
+                    searchForMovies(newText);
                 }
 
                 return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                mPresenter.saveLastResults(movieListData);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                MovieListData movieListData = mPresenter.getMovieListData();
+                if (movieListData!=null){
+                    populateData(movieListData.getResults());
+                }else {
+                    Log.d(TAG,"null movie list data in prefs");
+                }
             }
         });
     }
@@ -199,6 +216,10 @@ public class SplashActivity extends BaseActivity implements SplashView {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                if (item.isChecked()) {
+                    drawerLayout.closeDrawers();
+                    return true;
+                }
                 item.setChecked(true);
                 // close drawer when item is tapped
                 drawerLayout.closeDrawers();
@@ -218,7 +239,7 @@ public class SplashActivity extends BaseActivity implements SplashView {
                         mPresenter.getMoviesList(TOP_MOVIES, null);
                         return true;
                     case R.id.popular:
-                        actionbar.setTitle("Top Movies");
+                        actionbar.setTitle("Popular Movies");
                         mPresenter.getMoviesList(POPULAR_MOVIES, null);
                         return true;
                 }
@@ -231,7 +252,7 @@ public class SplashActivity extends BaseActivity implements SplashView {
 
     private void searchForMovies(final String term) {
         if (isNetworkConnected()) {
-
+            mPresenter.searchMovies(term);
         } else {
             showErrorDialog("No Internet Connection Available!", new View.OnClickListener() {
                 @Override
@@ -250,13 +271,15 @@ public class SplashActivity extends BaseActivity implements SplashView {
             llPlaceHolder.setVisibility(View.INVISIBLE);
             rvMovies.setVisibility(View.VISIBLE);
             if (adapterMovies.getItemCount() > 0) {
-                rvMovies.smoothScrollToPosition(0);
+                rvMovies.scrollToPosition(0);
             }
             adapterMovies.updateList(results);
         } else {
             rvMovies.setVisibility(View.INVISIBLE);
             llPlaceHolder.setVisibility(View.VISIBLE);
         }
+        this.movieListData = new MovieListData();
+        this.movieListData.setResults(results);
     }
 
     @OnClick(R.id.cvTopMoviesSplash)

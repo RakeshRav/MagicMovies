@@ -31,6 +31,7 @@ public class SplashPresenter<V extends SplashView> extends BasePresenter<V> impl
 
     @Override
     public void getMoviesList(final String listType, final String genres) {
+        Log.d(TAG,"listType : "+listType+" geners : "+genres);
         getMvpView().showLoading();
         RestClient.getApiServicePojo().getMoviesList(listType, BuildConfig.API_KEY,
                 genres,
@@ -72,5 +73,15 @@ public class SplashPresenter<V extends SplashView> extends BasePresenter<V> impl
                 Log.d(TAG, "movie search fail : " + error.toString());
             }
         });
+    }
+
+    @Override
+    public void saveLastResults(MovieListData data) {
+        getDataManager().setLastResult(data);
+    }
+
+    @Override
+    public MovieListData getMovieListData() {
+        return getDataManager().getLastResultData();
     }
 }

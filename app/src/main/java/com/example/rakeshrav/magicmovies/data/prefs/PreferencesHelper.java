@@ -16,6 +16,8 @@
 package com.example.rakeshrav.magicmovies.data.prefs;
 
 
+import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
+
 /**
  * Created by rao on .
  */
@@ -27,8 +29,8 @@ public interface PreferencesHelper {
 
     void setCurrentUserName(String userName);
 
-//    ItunesData getFavsResult();
-//
-//    void setFavsResult(ItunesData results);
+    MovieListData getLastResultData();
+
+    void setLastResult(MovieListData results);
 
 }

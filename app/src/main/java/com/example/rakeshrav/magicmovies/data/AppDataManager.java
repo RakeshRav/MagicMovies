@@ -62,15 +62,15 @@ public class AppDataManager implements DataManager {
         mPreferencesHelper.setCurrentUserName(userName);
     }
 
-//    @Override
-//    public ItunesData getFavsResult() {
-//        return mPreferencesHelper.getFavsResult();
-//    }
-//
-//    @Override
-//    public void setFavsResult(ItunesData results) {
-//        mPreferencesHelper.setFavsResult(results);
-//    }
+    @Override
+    public MovieListData getLastResultData() {
+        return mPreferencesHelper.getLastResultData();
+    }
+
+    @Override
+    public void setLastResult(MovieListData results) {
+        mPreferencesHelper.setLastResult(results);
+    }
 
     @Override
     public void getMovieDetails(String movieId, String apiKey, Callback<MovieDetailsData> callback) {
