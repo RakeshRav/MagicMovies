@@ -13,7 +13,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import com.example.rakeshrav.magicmovies.utility.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -111,6 +111,8 @@ public class SplashActivity extends BaseActivity implements SplashView {
 
     @Override
     protected void setUp() {
+
+        //animating views  for splash screen
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -139,26 +141,34 @@ public class SplashActivity extends BaseActivity implements SplashView {
             }
         }, 3000);
 
+        //getting initial list
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPresenter.getMoviesList(POPULAR_MOVIES, null);
+                getMoviesList(POPULAR_MOVIES, null);
             }
         }, 2000);
 
         //init toolbar
+        setupToolBar();
+        setUpNavDrawer();
+        setupSearch();
+        setupRecyclerView();
+    }
+
+    private void setupRecyclerView() {
+        rvMovies.setLayoutManager(new GridLayoutManager(this, 2));
+        //initializze recycler view
+        adapterMovies = new AdapterMovies(this, null);
+        rvMovies.setAdapter(adapterMovies);
+    }
+
+    private void setupToolBar() {
         setSupportActionBar(toolbar);
         actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         actionbar.setTitle("Popular Movies");
-        setUpNavDrawer();
-        setupSearch();
-
-        rvMovies.setLayoutManager(new GridLayoutManager(this, 2));
-        //initializze recycler view
-        adapterMovies = new AdapterMovies(this, null);
-        rvMovies.setAdapter(adapterMovies);
     }
 
     private void setupSearch() {
@@ -220,27 +230,27 @@ public class SplashActivity extends BaseActivity implements SplashView {
                     drawerLayout.closeDrawers();
                     return true;
                 }
+
                 item.setChecked(true);
                 // close drawer when item is tapped
                 drawerLayout.closeDrawers();
 
-//                Log.d(TAG,"item id : "+item.get);
                 switch (item.getItemId()) {
                     case R.id.drama_movie:
                         actionbar.setTitle("Drama Movies");
-                        mPresenter.getMoviesList(null, AppConstants.GENRE_ID_DRAMA);
+                        getMoviesList(null, AppConstants.GENRE_ID_DRAMA);
                         return true;
                     case R.id.horror_movie:
                         actionbar.setTitle("Horror Movies");
-                        mPresenter.getMoviesList(null, AppConstants.GENRE_ID_HORROR);
+                        getMoviesList(null, AppConstants.GENRE_ID_HORROR);
                         return true;
                     case R.id.top:
                         actionbar.setTitle("Top Movies");
-                        mPresenter.getMoviesList(TOP_MOVIES, null);
+                        getMoviesList(TOP_MOVIES, null);
                         return true;
                     case R.id.popular:
                         actionbar.setTitle("Popular Movies");
-                        mPresenter.getMoviesList(POPULAR_MOVIES, null);
+                        getMoviesList(POPULAR_MOVIES, null);
                         return true;
                 }
                 return true;
@@ -259,6 +269,20 @@ public class SplashActivity extends BaseActivity implements SplashView {
                 public void onClick(View view) {
                     dismissErrDialog();
                     searchForMovies(term);
+                }
+            });
+        }
+    }
+
+    private void getMoviesList(final String listType, final String genres) {
+        if (isNetworkConnected()) {
+            mPresenter.getMoviesList(listType, genres);
+        } else {
+            showErrorDialog("No Internet Connection Available!", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismissErrDialog();
+                    getMoviesList(listType, genres);
                 }
             });
         }

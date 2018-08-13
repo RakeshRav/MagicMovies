@@ -20,12 +20,15 @@ import android.content.Context;
 
 import com.example.rakeshrav.magicmovies.data.AppDataManager;
 import com.example.rakeshrav.magicmovies.data.DataManager;
+import com.example.rakeshrav.magicmovies.data.db.AppDbHelper;
+import com.example.rakeshrav.magicmovies.data.db.DbHelper;
 import com.example.rakeshrav.magicmovies.data.network.ApiHelper;
 import com.example.rakeshrav.magicmovies.data.network.AppApiHelper;
 import com.example.rakeshrav.magicmovies.data.prefs.AppPreferencesHelper;
 import com.example.rakeshrav.magicmovies.data.prefs.PreferencesHelper;
 import com.example.rakeshrav.magicmovies.di.ApiInfo;
 import com.example.rakeshrav.magicmovies.di.ApplicationContext;
+import com.example.rakeshrav.magicmovies.di.DatabaseInfo;
 import com.example.rakeshrav.magicmovies.di.PreferenceInfo;
 import com.example.rakeshrav.magicmovies.utility.AppConstants;
 
@@ -65,6 +68,12 @@ public class ApplicationModule {
     }
 
     @Provides
+    @DatabaseInfo
+    String provideDatabaseName() {
+        return AppConstants.DB_NAME;
+    }
+
+    @Provides
     @PreferenceInfo
     String providePreferenceName() {
         return AppConstants.PREF_NAME;
@@ -80,6 +89,12 @@ public class ApplicationModule {
     @Singleton
     PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
         return appPreferencesHelper;
+    }
+
+    @Provides
+    @Singleton
+    DbHelper provideDbHelper(AppDbHelper appDbHelper) {
+        return appDbHelper;
     }
 
     @Provides

@@ -19,7 +19,7 @@ package com.example.rakeshrav.magicmovies.ui.base;
  * Created by rao on .
  */
 
-import android.util.Log;
+import com.example.rakeshrav.magicmovies.utility.Log;
 
 import com.example.rakeshrav.magicmovies.R;
 import com.example.rakeshrav.magicmovies.data.DataManager;
@@ -128,7 +128,7 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 //                    getMvpView().onError(apiError.getMessage());
 //            }
         } catch (JsonSyntaxException | NullPointerException e) {
-            Log.e(TAG, "handleApiError", e);
+            Log.e(TAG, "handleApiError"+e.getMessage());
             getMvpView().onError(R.string.api_default_error);
         }
     }

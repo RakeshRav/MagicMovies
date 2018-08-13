@@ -13,5 +13,9 @@ public interface SplashMvpPresenter<V extends SplashView> extends MvpPresenter<V
 
     void saveLastResults(MovieListData data);
 
+    void saveDbCollection(MovieListData data);
+
+    void getDbCollection();
+
     MovieListData getMovieListData();
 }

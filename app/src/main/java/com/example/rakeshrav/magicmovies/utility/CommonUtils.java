@@ -22,7 +22,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.provider.Settings;
 import android.support.annotation.LayoutRes;
-import android.util.Log;
+import com.example.rakeshrav.magicmovies.utility.Log;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
@@ -169,6 +169,17 @@ public final class CommonUtils {
         SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE");
 
         return simpleDateformat.format(date);
+    }
+
+    public static String getFormatedDuration(int runtime) {
+        int hour = runtime/60;
+        while (runtime > 0){
+            runtime -= 60;
+        }
+
+        int min = runtime+60;
+
+        return hour+"h "+min+"min";
     }
 
 

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import com.example.rakeshrav.magicmovies.utility.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -147,20 +147,9 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsVi
         tvVotes.setText(String.valueOf(movieDetailsData.getVoteCount()).concat(" votes"));
 
         if(movieDetailsData.getRuntime()  != null) {
-            tvDuration.setText(getFormatedDuration(movieDetailsData.getRuntime()));
+            tvDuration.setText(CommonUtils.getFormatedDuration(movieDetailsData.getRuntime()));
         }
         this.movieDetailsData = movieDetailsData;
-    }
-
-    private String getFormatedDuration(int runtime) {
-        int hour = runtime/60;
-        while (runtime > 0){
-            runtime -= 60;
-        }
-
-        int min = runtime+60;
-
-        return hour+"h "+min+"min";
     }
 
     @OnClick(R.id.tvViewDetails)

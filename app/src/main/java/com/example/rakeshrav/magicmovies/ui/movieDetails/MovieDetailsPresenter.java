@@ -1,6 +1,6 @@
 package com.example.rakeshrav.magicmovies.ui.movieDetails;
 
-import android.util.Log;
+import com.example.rakeshrav.magicmovies.utility.Log;
 import android.view.View;
 
 import com.example.rakeshrav.magicmovies.BuildConfig;

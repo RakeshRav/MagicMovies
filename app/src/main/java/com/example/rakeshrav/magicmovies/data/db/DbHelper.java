@@ -13,23 +13,23 @@
  * limitations under the License
  */
 
-package com.example.rakeshrav.magicmovies.data;
+package com.example.rakeshrav.magicmovies.data.db;
 
-import com.example.rakeshrav.magicmovies.data.db.DbHelper;
-import com.example.rakeshrav.magicmovies.data.network.ApiHelper;
-import com.example.rakeshrav.magicmovies.data.prefs.PreferencesHelper;
+
+import com.example.rakeshrav.magicmovies.data.db.model.movieData.Result;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
+
 /**
- * Created by rao on .
- * define extra relation related to data storage policy here
+ * Created by janisharali on 08/12/16.
  */
 
-public interface DataManager extends PreferencesHelper, ApiHelper, DbHelper {
+public interface DbHelper {
 
-    Observable<Boolean> seedDatabaseQuestions();
+    Observable<List<Result>> getAllResults();
 
-    Observable<Boolean> seedDatabaseOptions();
-
+    Observable<Boolean> saveCollectionList(List<Result> results);
 }

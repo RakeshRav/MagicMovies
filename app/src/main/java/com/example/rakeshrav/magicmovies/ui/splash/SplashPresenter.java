@@ -1,19 +1,26 @@
 package com.example.rakeshrav.magicmovies.ui.splash;
 
-import android.util.Log;
+import com.example.rakeshrav.magicmovies.utility.Log;
 import android.view.View;
 
 import com.example.rakeshrav.magicmovies.BuildConfig;
 import com.example.rakeshrav.magicmovies.data.DataManager;
+import com.example.rakeshrav.magicmovies.data.db.model.movieData.Result;
 import com.example.rakeshrav.magicmovies.data.network.RestClient;
 import com.example.rakeshrav.magicmovies.data.network.model.movieListData.MovieListData;
 import com.example.rakeshrav.magicmovies.data.network.model.searchData.SearchData;
 import com.example.rakeshrav.magicmovies.ui.base.BasePresenter;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.internal.schedulers.IoScheduler;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -79,6 +86,42 @@ public class SplashPresenter<V extends SplashView> extends BasePresenter<V> impl
     public void saveLastResults(MovieListData data) {
         getDataManager().setLastResult(data);
     }
+
+    @Override
+    public void saveDbCollection(MovieListData data) {
+
+        ArrayList<Result> results = new ArrayList<>();
+        for (com.example.rakeshrav.magicmovies.data.network.model.movieListData.Result result: data.getResults()){
+            Result result1 = new Result();
+            result1.setCollectionId(0L);
+            result1.setPosterPath(result.getPosterPath());
+            results.add(result1);
+        }
+
+        getDataManager().saveCollectionList(results);
+
+        Log.d(TAG,"results saved in db");
+    }
+
+    @Override
+    public void getDbCollection() {
+        getCompositeDisposable().add(getDataManager()
+                .getAllResults()
+                .subscribeOn(new IoScheduler())
+                .subscribe(new Consumer<List<Result>>() {
+                    @Override
+                    public void accept(List<Result> results) throws Exception {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+
+                        if (results != null) {
+                            Log.d(TAG,"results : "+results.size());
+                        }
+                    }
+                }));
+    }
+
 
     @Override
     public MovieListData getMovieListData() {

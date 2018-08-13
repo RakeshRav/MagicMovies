@@ -8,12 +8,16 @@ buildscript {
     }
 }
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
+greendao {
+    schemaVersion 1
+}
 
 android {
     compileSdkVersion 28
@@ -85,6 +89,9 @@ dependencies {
     implementation "com.wang.avi:library:$rootProject.aviLibrary"
 
     implementation "com.miguelcatalan:materialsearchview:$rootProject.searchView"
+
+    // database
+    implementation "org.greenrobot:greendao:$rootProject.greenDaoVersion"
 
     // dependencies for local unit tests
     testCompile "junit:junit:$rootProject.ext.junitVersion"

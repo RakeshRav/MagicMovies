@@ -28,7 +28,14 @@ import javax.inject.Inject;
 
 
 /**
- * Created by rao on .
+ * Created by rao .
+ *
+ *
+ * project info
+ * find the Log.java in utility, by setting false in the file you can hide logs, true for debugging purpose
+ * Project based on mvp architecture
+ * ui contain all the ui related files and presenter to connect with different services
+ * di for the dependencies with application and activity levels separated
  */
 
 public class MagicMoviesApp extends Application {

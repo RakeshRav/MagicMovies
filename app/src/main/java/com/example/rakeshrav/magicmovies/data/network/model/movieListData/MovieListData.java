@@ -1,24 +1,40 @@
-
 package com.example.rakeshrav.magicmovies.data.network.model.movieListData;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
+
 public class MovieListData {
+
+    @Expose
+    @SerializedName("id")
+    private Integer id;
 
     @SerializedName("page")
     @Expose
     private Integer page;
+
     @SerializedName("total_results")
     @Expose
     private Integer totalResults;
+
     @SerializedName("total_pages")
     @Expose
     private Integer totalPages;
+
     @SerializedName("results")
     @Expose
     private List<Result> results = null;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getPage() {
         return page;
