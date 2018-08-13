@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rakeshrav.magicmovies.BuildConfig;
 import com.example.rakeshrav.magicmovies.R;
@@ -150,11 +151,23 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsVi
             tvDuration.setText(CommonUtils.getFormatedDuration(movieDetailsData.getRuntime()));
         }
         this.movieDetailsData = movieDetailsData;
+        if (movieDetailsData.getHomepage() == null){
+            tvViewDetails.setVisibility(View.GONE);
+        }else {
+            tvViewDetails.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.tvViewDetails)
     public void onViewClicked() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(movieDetailsData.getHomepage()));
-        startActivity(intent);
+        Log.d(TAG,"url : "+movieDetailsData.getHomepage());
+
+        try{
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(movieDetailsData.getHomepage()));
+            startActivity(intent);
+        }catch (Exception e){
+//            Log.d(TAG,"ex : "+);
+            Toast.makeText(this,"No Information Availabel", Toast.LENGTH_LONG).show();
+        }
     }
 }
